@@ -1,0 +1,14 @@
+{
+  "model name": "base",
+  "test score": 0.947,
+  "test trypsin": 0.465,
+  "test chemotrypsin": 0.482,
+  "hyperparameters": {
+    "strides": 1,
+    "padding": "causal",
+    "num_filters": 256,
+    "num_conv_layers": 1,
+    "kernel_size": 12,
+    "embdedding_output_dim": 64
+  }
+}
