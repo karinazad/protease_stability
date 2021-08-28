@@ -1,23 +1,16 @@
 import os
 import json
+import argparse
+from datetime import date
 
 from tensorflow.keras import optimizers
 import tensorflow as tf
 from sklearn.model_selection import ParameterSampler
 
 from src.utils.utils import _train_test_val_split
-from src.data_processing import get_and_process_data
+from src.evals.data_processing import get_and_process_data
 from src.models.base import build_base_model
-from src.globals import SEQ_LENGTH, N_CHAR
-
-parameter_grid = {
-    "num_conv_layers": [1, 2, 3],
-    "padding": ["valid", "causal"],
-    "num_filters": [32, 64, 128, 256, 512, 1028],
-    "kernel_size": [3, 5, 8, 10, 12, 15],
-    "strides": [1, 2, 3],
-    "embdedding_output_dim": [32, 64, 128, 256, 512],
-}
+from src.globals import SEQ_LENGTH, N_CHAR, PARAMETER_GRID, DATA_PATH, SAVE_DIR
 
 
 def sample_hyperparameters(parameters, n_iter):
@@ -26,13 +19,13 @@ def sample_hyperparameters(parameters, n_iter):
     )
 
 
-def run_hyperparameter_search(parameters, n_iter, data_path, save_dir, suffix=""):
+def run_hyperparameter_search(parameter_grid, n_iter, data_path, save_dir, suffix=""):
     data = get_and_process_data(data_path)
     X, y1, y2 = data["sequences"], data["trypsin_stability"], data["chemotrypsin_stability"]
 
     (X_train, y1_train, y2_train), (X_val, y1_val, y2_val), (_, _, _) = _train_test_val_split(X, y1, y2)
 
-    sampled_parameters = sample_hyperparameters(parameters=parameters, n_iter=n_iter)
+    sampled_parameters = sample_hyperparameters(parameters=parameter_grid, n_iter=n_iter)
     scores = {}
 
     if not os.path.exists(save_dir):
@@ -76,7 +69,38 @@ def run_hyperparameter_search(parameters, n_iter, data_path, save_dir, suffix=""
 
 
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--parameter-grid",
+        type=str,
+        default=PARAMETER_GRID,
+    )
+    parser.add_argument(
+        "--num-iters",
+        type=int,
+        default=50,
+    )
+    parser.add_argument(
+        "--data-path",
+        type=str,
+        default=DATA_PATH,
+    )
+    parser.add_argument(
+        "--save-dir",
+        type=str,
+        default=SAVE_DIR,
+    )
+    parser.add_argument(
+        "--suffix",
+        type=str,
+        default=str(date.today()),
+    )
+    args = parser.parse_args()
 
 
-
-
+    run_hyperparameter_search(parameter_grid=args.parameter_grid,
+                              n_iter=args.num_iters,
+                              data_path=args.data_path,
+                              save_dir=args.save_dir,
+                              suffix=args.suffix)
