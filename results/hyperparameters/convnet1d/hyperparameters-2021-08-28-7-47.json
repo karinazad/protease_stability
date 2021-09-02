@@ -1,0 +1,58 @@
+{
+    "3": {
+        "score": 1.0594013929367065,
+        "score trypsin": 0.5115320682525635,
+        "score chemotrypsin": 0.547869086265564,
+        "hyperparameters": {
+            "strides": 2,
+            "padding": "valid",
+            "num_filters": 16,
+            "num_conv_layers": 1,
+            "kernel_size": 12,
+            "embdedding_output_dim": 8
+        },
+        "epochs": 13
+    },
+    "0": {
+        "score": 1.1536800861358643,
+        "score trypsin": 0.566455066204071,
+        "score chemotrypsin": 0.5872250199317932,
+        "hyperparameters": {
+            "strides": 3,
+            "padding": "causal",
+            "num_filters": 64,
+            "num_conv_layers": 2,
+            "kernel_size": 15,
+            "embdedding_output_dim": 10
+        },
+        "epochs": 7
+    },
+    "5": {
+        "score": 1.2581828832626343,
+        "score trypsin": 0.5919988751411438,
+        "score chemotrypsin": 0.6661842465400696,
+        "hyperparameters": {
+            "strides": 2,
+            "padding": "valid",
+            "num_filters": 128,
+            "num_conv_layers": 1,
+            "kernel_size": 10,
+            "embdedding_output_dim": 4
+        },
+        "epochs": 14
+    },
+    "1": {
+        "score": 1.4734885692596436,
+        "score trypsin": 0.709965705871582,
+        "score chemotrypsin": 0.7635228037834167,
+        "hyperparameters": {
+            "strides": 1,
+            "padding": "valid",
+            "num_filters": 512,
+            "num_conv_layers": 1,
+            "kernel_size": 3,
+            "embdedding_output_dim": 10
+        },
+        "epochs": 5
+    }
+}
