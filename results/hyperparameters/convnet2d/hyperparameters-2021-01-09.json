@@ -1,0 +1,145 @@
+{
+    "5": {
+        "loss": 2.265,
+        "loss Trypsin": 0.997,
+        "loss Chemotrypsin": 1.268,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 64,
+            "num_dense_layers": 4,
+            "num_conv_layers": 1,
+            "kernel_size": 3
+        },
+        "epochs": 8
+    },
+    "2": {
+        "loss": 2.357,
+        "loss Trypsin": 1.034,
+        "loss Chemotrypsin": 1.322,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 64,
+            "num_dense_layers": 3,
+            "num_conv_layers": 1,
+            "kernel_size": 15
+        },
+        "epochs": 8
+    },
+    "7": {
+        "loss": 2.467,
+        "loss Trypsin": 1.087,
+        "loss Chemotrypsin": 1.38,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 16,
+            "num_dense_layers": 1,
+            "num_conv_layers": 1,
+            "kernel_size": 3
+        },
+        "epochs": 8
+    },
+    "1": {
+        "loss": 2.469,
+        "loss Trypsin": 1.073,
+        "loss Chemotrypsin": 1.396,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 32,
+            "num_dense_layers": 1,
+            "num_conv_layers": 2,
+            "kernel_size": 5
+        },
+        "epochs": 8
+    },
+    "14": {
+        "loss": 2.515,
+        "loss Trypsin": 1.077,
+        "loss Chemotrypsin": 1.438,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 256,
+            "num_dense_layers": 4,
+            "num_conv_layers": 1,
+            "kernel_size": 10
+        },
+        "epochs": 6
+    },
+    "20": {
+        "loss": 2.528,
+        "loss Trypsin": 1.188,
+        "loss Chemotrypsin": 1.34,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 64,
+            "num_dense_layers": 2,
+            "num_conv_layers": 1,
+            "kernel_size": 5
+        },
+        "epochs": 9
+    },
+    "11": {
+        "loss": 2.56,
+        "loss Trypsin": 1.107,
+        "loss Chemotrypsin": 1.453,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 256,
+            "num_dense_layers": 4,
+            "num_conv_layers": 1,
+            "kernel_size": 12
+        },
+        "epochs": 6
+    },
+    "17": {
+        "loss": 2.671,
+        "loss Trypsin": 1.172,
+        "loss Chemotrypsin": 1.5,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 16,
+            "num_dense_layers": 3,
+            "num_conv_layers": 2,
+            "kernel_size": 5
+        },
+        "epochs": 12
+    },
+    "19": {
+        "loss": 2.673,
+        "loss Trypsin": 1.16,
+        "loss Chemotrypsin": 1.513,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 32,
+            "num_dense_layers": 1,
+            "num_conv_layers": 1,
+            "kernel_size": 8
+        },
+        "epochs": 6
+    },
+    "8": {
+        "loss": 2.746,
+        "loss Trypsin": 1.122,
+        "loss Chemotrypsin": 1.624,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 32,
+            "num_dense_layers": 4,
+            "num_conv_layers": 2,
+            "kernel_size": 5
+        },
+        "epochs": 10
+    },
+    "13": {
+        "loss": 2.758,
+        "loss Trypsin": 1.242,
+        "loss Chemotrypsin": 1.516,
+        "hyperparameters": {
+            "strides": 1,
+            "num_units_dense_layer": 128,
+            "num_dense_layers": 3,
+            "num_conv_layers": 1,
+            "kernel_size": 15
+        },
+        "epochs": 7
+    }
+}
