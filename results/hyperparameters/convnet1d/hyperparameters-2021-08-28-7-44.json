@@ -1,0 +1,16 @@
+{
+    "2": {
+        "score": 0.9954015612602234,
+        "score trypsin": 0.5061020851135254,
+        "score chemotrypsin": 0.48929938673973083,
+        "hyperparameters": {
+            "strides": 1,
+            "padding": "causal",
+            "num_filters": 32,
+            "num_conv_layers": 1,
+            "kernel_size": 5,
+            "embdedding_output_dim": 6
+        },
+        "epochs": 20
+    }
+}

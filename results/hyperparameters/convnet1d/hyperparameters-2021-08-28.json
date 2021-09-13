@@ -1,0 +1,30 @@
+{
+    "0": {
+        "score": 1.1183327436447144,
+        "score trypsin": 0.5214376449584961,
+        "score chemotrypsin": 0.5968952178955078,
+        "hyperparameters": {
+            "strides": 3,
+            "padding": "causal",
+            "num_filters": 16,
+            "num_conv_layers": 2,
+            "kernel_size": 10,
+            "embdedding_output_dim": 6
+        },
+        "epochs": 20
+    },
+    "3": {
+        "score": 1.2604711055755615,
+        "score trypsin": 0.600492537021637,
+        "score chemotrypsin": 0.6599783897399902,
+        "hyperparameters": {
+            "strides": 1,
+            "padding": "causal",
+            "num_filters": 16,
+            "num_conv_layers": 1,
+            "kernel_size": 3,
+            "embdedding_output_dim": 12
+        },
+        "epochs": 19
+    }
+}
