@@ -2,8 +2,7 @@ from typing import Optional
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import r2_score
-from src_.utils.general import multi_target_train_test_split
+from scipy.stats import pearsonr
 
 np.random.seed(42)
 
@@ -14,9 +13,10 @@ def compute_stability_score(measured_EC50, predicted_EC50):
 
 
 def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = False, title=None, save_path=None):
-    kT, kC = np.array(kT), np.array(kC)
+    X, kT, kC = np.array(X), np.array(kT), np.array(kC)
 
     if sample:
+        np.random.seed(42)
         indices = np.random.randint(low=0, high=X.shape[0], size=(sample,))
         X, kT, kC = X[indices], kT[indices], kC[indices]
 
@@ -25,7 +25,7 @@ def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = F
 
     # Get the stability scores and correlations
     stability_T, stability_C = compute_stability_score(kT, kT_pred), compute_stability_score(kC, kC_pred)
-    annots_r2 = [np.round(r2_score(kT, kC), 2), np.round(r2_score(stability_T, stability_C), 2)]
+    annots_r2 = [np.round(pearsonr(kT, kC)[0], 2), np.round(pearsonr(stability_T, stability_C)[0], 2)]
 
     fig = plt.figure(figsize=(10, 4))
 
@@ -33,15 +33,15 @@ def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = F
     ax.scatter(kT, kC, alpha=0.3)
     ax.set_xlabel("kT (Trypsin)")
     ax.set_ylabel("kC (Chemotrypsin)")
-    ax.set_title("Unfolded")
-    ax.annotate(f"R^2={annots_r2[0]}", xy=(15, 150), xycoords="axes points")
+    ax.set_title("Unfolded kT/kC")
+    ax.annotate(f"r^2={annots_r2[0]}", xy=(15, 150), xycoords="axes points")
 
     ax = fig.add_subplot(1, 2, 2)
     ax.scatter(stability_T, stability_C, alpha=0.3, color="orange")
-    ax.set_xlabel("Stability score - Trypsin")
-    ax.set_ylabel("Stability score - Chemotrypsin")
-    ax.set_title("Stability Score")
-    ax.annotate(f"R^2={annots_r2[1]}", xy=(15, 150), xycoords="axes points")
+    ax.set_xlabel("Stability score Trypsin")
+    ax.set_ylabel("Stability score Chemotrypsin")
+    ax.set_title("Stability Scores")
+    ax.annotate(f"r^2={annots_r2[1]}", xy=(15, 150), xycoords="axes points")
 
     if title is None:
         title = model.name
@@ -52,5 +52,3 @@ def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = F
         plt.savefig(save_path, bbox_inches='tight')
     else:
         plt.show()
-
-

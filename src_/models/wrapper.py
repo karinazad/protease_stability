@@ -31,23 +31,32 @@ class ProtNet:
 
     def train(self,
               X_unfolded,
-              targets_unfolded,
+              kT_unfolded,
+              kC_unfolded,
               X_folded,
-              targets_folded,
+              kT_folded,
+              kC_folded,
               epochs=5,
               batch_size=64,
               alpha=0.5,
               validation=True,
+              early_stopping=True,
               ):
         assert 0 <= alpha <= 1, "Alpha must be in the [0,1] range."
 
         if validation:
-            train_dataset, val_dataset = create_train_validation_tf_dataset(X_unfolded, *targets_unfolded,
-                                                                            X_folded, *targets_folded,
+            train_dataset, val_dataset = create_train_validation_tf_dataset(X_unfolded, kT_unfolded, kC_unfolded,
+                                                                            X_folded, kT_folded, kC_folded,
                                                                             train_batch_size=batch_size)
         else:
-            train_dataset = create_train_tf_dataset(X_unfolded, *targets_unfolded, X_folded, *targets_folded,
+            train_dataset = create_train_tf_dataset(X_unfolded, kT_unfolded, kC_unfolded,
+                                                    X_folded, kT_folded, kC_folded,
                                                     train_batch_size=batch_size)
+
+        if early_stopping:
+            min_val_loss = np.inf
+            early_stopping_patience = 5
+            val_loss_increase_count = 0
 
         for epoch in range(epochs):
             print(f"\nEpoch {epoch + 1}/{epochs}:")
@@ -58,10 +67,10 @@ class ProtNet:
                     self.train_step(x, y1, y2, x_folded, y1_folded, y2_folded, alpha=alpha)
 
                 if step % 50 == 0:
-                    print(f"\n\tstep={step},   "
+                    print(f"\n\tstep={step}:   "
                           f"loss={round(float(loss), 3)},   "
-                          f"unfolded mse={round(float(mse_loss_term), 3)},   "
-                          f"stab score agreement mse={round(float(agreement_loss_term), 3)}")
+                          f"unfolded_mse={round(float(mse_loss_term), 3)},   "
+                          f"stab_score_agreement_mse={round(float(agreement_loss_term), 3)}")
 
                     self.losses["loss"].append(loss.numpy())
                     self.losses["unfolded_mse"].append(mse_loss_term.numpy())
@@ -74,13 +83,26 @@ class ProtNet:
                                 self.val_step(x, y1, y2, x_folded, y1_folded, y2_folded, alpha=alpha)
 
                             print(f"\t"
-                                  f"val loss={round(float(loss), 3)},   "
-                                  f"val unfolded mse={round(float(mse_loss_term), 3)},   "
-                                  f"val stab score agreement mse={round(float(agreement_loss_term), 3)}")
+                                  f"val_loss={round(float(loss), 3)},   "
+                                  f"val_unfolded_mse={round(float(mse_loss_term), 3)},   "
+                                  f"val_stab_score_agreement_mse={round(float(agreement_loss_term), 3)}")
 
                             self.losses["val_loss"].append(loss.numpy())
                             self.losses["val_unfolded_mse"].append(mse_loss_term.numpy())
                             self.losses["val_agreement_mse"].append(agreement_loss_term.numpy())
+
+                            if early_stopping:
+                                if loss > min_val_loss:
+                                    val_loss_increase_count += 1
+
+                                    if val_loss_increase_count == early_stopping_patience:
+                                        return None
+                                else:
+                                    min_val_loss = loss
+                                    val_loss_increase_count = 0
+
+    def predict(self, X):
+        return [y.numpy() for y in self.model(X)]
 
     def train_step(self, x, y1, y2, x_folded, y1_folded, y2_folded, alpha):
         with tf.GradientTape() as tape:
@@ -117,3 +139,5 @@ class ProtNet:
         loss = (1 - alpha) * mse_loss_term + alpha * agreement_loss_term
 
         return loss, mse_loss_term, agreement_loss_term
+
+

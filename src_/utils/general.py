@@ -124,3 +124,12 @@ def average_losses(losses, epochs):
         averaged_losses.append(avg_loss)
 
     return averaged_losses
+
+
+def sample_arrays(arrays, n_samples):
+    np.random.seed(0)
+
+    indices = np.random.randint(low=0, high=arrays[0].shape[0], size=(n_samples,))
+
+    return list(map(lambda x: x[indices], arrays))
+
