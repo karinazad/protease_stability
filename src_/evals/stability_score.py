@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 
+from src_.utils.general import sample_arrays
+
 np.random.seed(42)
 
 
@@ -12,19 +14,20 @@ def compute_stability_score(measured_EC50, predicted_EC50):
     return stability_score
 
 
-def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = False, title=None, save_path=None):
-    X, kT, kC = np.array(X), np.array(kT), np.array(kC)
-
-    if sample:
-        np.random.seed(42)
-        indices = np.random.randint(low=0, high=X.shape[0], size=(sample,))
-        X, kT, kC = X[indices], kT[indices], kC[indices]
-
+def get_predictions_and_stability_scores(model, X, kT, kC, sample=None):
+    X, kT, kC = sample_arrays([X, kT, kC], n_samples=sample)
     kT_pred, kC_pred = model(X)
     kT_pred, kC_pred = np.array(kT_pred).flatten(), np.array(kC_pred).flatten()
-
-    # Get the stability scores and correlations
     stability_T, stability_C = compute_stability_score(kT, kT_pred), compute_stability_score(kC, kC_pred)
+
+    return kT_pred, kC_pred, stability_T, stability_C
+
+
+def plot_stability_score_correlation(model, X, kT, kC, sample=None, title=None, save_path=None):
+    X, kT, kC = sample_arrays([X, kT, kC], n_samples=sample)
+
+    # Get stability scores and correlations
+    kT_pred, kC_pred, stability_T, stability_C = get_predictions_and_stability_scores(model, X, kT, kC)
     annots_r2 = [np.round(pearsonr(kT, kC)[0], 2), np.round(pearsonr(stability_T, stability_C)[0], 2)]
 
     fig = plt.figure(figsize=(10, 4))
@@ -33,7 +36,7 @@ def plot_stability_score_correlation(model, X, kT, kC, sample: Optional[int] = F
     ax.scatter(kT, kC, alpha=0.3)
     ax.set_xlabel("kT (Trypsin)")
     ax.set_ylabel("kC (Chemotrypsin)")
-    ax.set_title("Unfolded kT/kC")
+    ax.set_title("Measured kT/kC")
     ax.annotate(f"r^2={annots_r2[0]}", xy=(15, 150), xycoords="axes points")
 
     ax = fig.add_subplot(1, 2, 2)

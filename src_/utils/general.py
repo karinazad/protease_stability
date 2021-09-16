@@ -126,10 +126,25 @@ def average_losses(losses, epochs):
     return averaged_losses
 
 
-def sample_arrays(arrays, n_samples):
-    np.random.seed(0)
+def sample_arrays(arrays, n_samples=None):
+    np.random.seed(42)
+    arrays = [np.array(arr) for arr in arrays]
+    if n_samples:
+        indices = np.random.randint(low=0, high=arrays[0].shape[0], size=(n_samples,))
 
-    indices = np.random.randint(low=0, high=arrays[0].shape[0], size=(n_samples,))
+        return list(map(lambda x: x[indices], arrays))
 
-    return list(map(lambda x: x[indices], arrays))
+    return arrays
+
+
+def convert_to_numpy(dfs):
+    if type(dfs) is not list:
+        dfs = [dfs]
+
+    arrays = list(
+        map(lambda x: np.array(x),
+            dfs)
+    )
+
+    return arrays
 

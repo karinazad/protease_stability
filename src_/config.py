@@ -67,13 +67,16 @@ class Config:
         "default_epochs": 20,
         "params": PARAMS,
         "parameter_grid": PARAMETER_GRID,
+        "range_kT":  (-6, 2),
+        "range_kC": (-6, 0.5),
     }
 
-    __setters = ["data_path", "save_dir", "params", "parameter_grid"]
+    __setters = ["data_path", "save_dir", "params", "parameter_grid", "range_kT", "range_kC"]
 
     @staticmethod
     def get(name):
-        return Config.__conf[name]
+        if Config.__conf[name]:
+            return Config.__conf[name]
 
     @staticmethod
     def set(name, value):

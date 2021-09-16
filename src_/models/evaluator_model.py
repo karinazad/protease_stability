@@ -1,5 +1,8 @@
 from tensorflow.keras import layers
+from tensorflow.keras import regularizers
 import tensorflow as tf
+
+
 
 
 class EMConvNet2D(tf.keras.Model):
@@ -38,8 +41,8 @@ class EMConvNet2D(tf.keras.Model):
             layers.Dense(units, activation='relu')
             for units in dense_sizes
         ]
-        self.output_layer1 = layers.Dense(1, name=target_names[0])
-        self.output_layer2 = layers.Dense(1, name=target_names[1])
+        self.output_layer1 = layers.Dense(1, name=target_names[0], activity_regularizer=regularizers.l2(1e-5))
+        self.output_layer2 = layers.Dense(1, name=target_names[1], activity_regularizer=regularizers.l2(1e-5))
 
     def call(self, inputs, training=None, mask=None):
         # print("Input", inputs.shape)

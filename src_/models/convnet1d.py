@@ -1,7 +1,8 @@
-from tensorflow.keras import layers
 import tensorflow as tf
+from tensorflow.keras import layers
+from tensorflow.keras import regularizers
+
 from src_.utils.general import compute_layer_sizes
-from src_.models.losses import combined_mse, agreement_mse
 
 
 class ProtConvNet1D(tf.keras.Model):
@@ -37,10 +38,16 @@ class ProtConvNet1D(tf.keras.Model):
 
         self.dense_layers = [
             layers.Dense(num_units_dense_layer, activation='relu')
-            for _ in range(num_dense_layers)
+            for _ in range(num_dense_layers-1)
         ]
-        self.output_layer1 = layers.Dense(1, name=target_names[0])
-        self.output_layer2 = layers.Dense(1, name=target_names[1])
+
+        self.dense1 = layers.Dense(num_units_dense_layer, name=target_names[0],
+                                   activity_regularizer=regularizers.l2(1e-5))
+        self.dense2 = layers.Dense(num_units_dense_layer, name=target_names[0],
+                                   activity_regularizer=regularizers.l2(1e-5))
+
+        self.output_layer1 = layers.Dense(1, name=target_names[0], activity_regularizer=regularizers.l2(1e-5))
+        self.output_layer2 = layers.Dense(1, name=target_names[1], activity_regularizer=regularizers.l2(1e-5))
 
     def call(self, inputs, training=None, mask=None):
         # print("Input", inputs.shape)
@@ -61,8 +68,11 @@ class ProtConvNet1D(tf.keras.Model):
             x = layer(x)
             # print("Dense", x.shape)
 
-        output1 = self.output_layer1(x)
-        output2 = self.output_layer2(x)
+        x1 = self.dense1(x)
+        x2 = self.dense2(x)
+
+        output1 = self.output_layer1(x1)
+        output2 = self.output_layer2(x2)
         # print("Output", output1.shape, "\n")
 
         return [output1, output2]
