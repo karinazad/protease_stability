@@ -1,3 +1,4 @@
+from tensorflow.keras import regularizers
 from tensorflow.keras import layers
 import tensorflow as tf
 from src_.utils.general import compute_layer_sizes
@@ -42,8 +43,8 @@ class ProtConvNet2D(tf.keras.Model):
             layers.Dense(num_units_dense_layer, activation='relu')
             for _ in range(num_dense_layers)
         ]
-        self.output_layer1 = layers.Dense(1, name=target_names[0])
-        self.output_layer2 = layers.Dense(1, name=target_names[1])
+        self.output_layer1 = layers.Dense(1, name=target_names[0], activity_regularizer=regularizers.l2(1e-5))
+        self.output_layer2 = layers.Dense(1, name=target_names[1], activity_regularizer=regularizers.l2(1e-5))
 
     def call(self, inputs, training=None, mask=None):
         # print("Input", inputs.shape)
