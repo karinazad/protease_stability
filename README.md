@@ -1,5 +1,11 @@
-# Protein Stability Predictor 
+# Protein Stability Predictors
 for cDNA display / protease project @ Rocklin Lab
+
+## Implemented Models
+
+1. `ProtConvNet1D`
+2. `ProtConvNet2D`
+3. `EMConvNet2D`
 
 ## Structure of the repo
 
